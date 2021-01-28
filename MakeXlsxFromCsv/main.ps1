@@ -144,7 +144,7 @@ try {
         New-Item -Path "output" -ItemType Directory
     }
 
-    $book.SaveAs("$(Get-Location)\output\tt.xlsx")
+    $book.SaveAs("$(Get-Location)\output\$([System.IO.Path]::GetFileNameWithoutExtension($mydialog))_fromCSV_$(Get-Date -Format yyyyMMdd_HHmmss).xlsx")
     $excel.DisplayAlerts = $true
     $excel.ScreenUpdating = $true
     $excel.EnableEvents = $true
