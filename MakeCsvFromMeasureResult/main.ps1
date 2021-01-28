@@ -15,7 +15,7 @@ Function Get-MeasureFilename() {
 
     $dialog.Title = "測定ファイルを選択してください。"
     $dialog.Filter = "測定ファイル(*.txt) | *.txt"
-    $dialog.InitialDirectory = "C:\"
+    $dialog.InitialDirectory = "$($env:USERPROFILE)\Desktop"
 
     #ダイアログ表示
     $result = $dialog.ShowDialog()
@@ -89,8 +89,8 @@ else {
 #     return
 # }
 
-Set-Location ..
-[string[]]$DataArray = (Get-Content -Path sampledata/14828-sample.txt -Encoding shift-jis)
+# Set-Location ..
+# [string[]]$DataArray = (Get-Content -Path sampledata/14828-sample.txt -Encoding shift-jis)
 
 [string]$mydialog = Get-MeasureFilename
 [string[]]$DataArray = (Get-Content -Path $mydialog -Encoding shift-jis)
@@ -134,14 +134,17 @@ foreach ($DataLine in $DataArray) {
     }
 }
 
-
+if (!(Test-Path("output"))) {
+    New-Item -Path "output" -ItemType Directory
+}
+[string]$outputpath = "$($PSpathroot)output\$([System.IO.Path]::GetFileNameWithoutExtension($mydialog))_ParsedMeasureData_$(Get-Date -Format yyyyMMdd_HHmmss).csv"
 [List[string]]$outdata = ""
 foreach ($outdata in $HappyList) {
-    Get-Splitback($outdata) | Out-File -LiteralPath test.csv -Encoding shift-jis -Append
+    Get-Splitback($outdata) | Out-File -LiteralPath $outputpath -Encoding shift-jis -Append
 }
 
 
-Write-Host "Finish"
+Write-Host "Finish" -ForegroundColor Green
 # [Console]::ReadKey($true) | Out-Null
 
 
