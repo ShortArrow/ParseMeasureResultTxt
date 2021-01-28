@@ -138,7 +138,7 @@ try {
         )
         $sheet.Range($sheet.Cells($i + 1, "A"), $sheet.Cells($i + 1, "AA")).Value(10) = $array1
     }
-    
+    $sheet.Columns.ColumnWidth = 3
 
     if (!(Test-Path("output"))) {
         New-Item -Path "output" -ItemType Directory
